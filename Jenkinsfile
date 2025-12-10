@@ -32,11 +32,11 @@ pipeline {
         }
 
          stage('Deploy') {
-           steps {
-            withCredentials([usernamePassword(
-            credentialsId: 'docker-hub-creds',
-            passwordVariable: 'DOCKER_PASSWORD',
-            usernameVariable: 'DOCKER_USERNAME'
+             steps {
+                withCredentials([usernamePassword(
+                credentialsId: 'docker-hub-creds',
+                passwordVariable: 'DOCKER_PASSWORD',
+                usernameVariable: 'DOCKER_USERNAME'
         )]) {
             script {
                 sh '''
