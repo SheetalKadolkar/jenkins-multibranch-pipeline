@@ -31,6 +31,29 @@ pipeline {
             }
         }
 
+        stage('Deploy') {
+           steps {
+            withCredentials([usernamePassword(
+            credentialsId: 'docker-hub-creds',
+            passwordVariable: 'DOCKER_PASSWORD',
+            usernameVariable: 'DOCKER_USERNAME'
+        )]) {
+            script {
+                sh '''
+                echo "Logging into Docker Hub..."
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+                echo "Tagging image..."
+                docker tag my-python-app:latest $DOCKER_USERNAME/my-python-app:latest
+
+                echo "Pushing image..."
+                docker push $DOCKER_USERNAME/my-python-app:latest
+                '''
+            }
+        }
+    }
+}
+
     }
 
     post {
